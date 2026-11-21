@@ -1,10 +1,16 @@
 import { ModeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { cookies } from "next/headers";
 import Link from "next/link";
 
+export const instant = false;
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-export default function Home() {
+export default async function Home() {
+	const cookieStore = await cookies();
+
+	const access = cookieStore.get("sp_access");
+
 	return (
 		<main>
 			<div className="absolute right-4 top-4">
@@ -16,8 +22,10 @@ export default function Home() {
 						Wave<span className="text-primary">Lens</span>
 					</h1>
 					<p className="text-sm">Dashboard for Spotify</p>
-					<Link href={BASE_URL + "/auth"}>
-						<Button className={"w-full mt-6 font-semibold"}>Try it out!</Button>
+					<Link href={`${BASE_URL}${access ? "/dashboard" : "/auth"}`}>
+						<Button className={"w-full mt-6 font-semibold"}>
+							{access ? "Go to dashboard" : "Try it out!"}
+						</Button>
 					</Link>
 				</div>
 			</section>

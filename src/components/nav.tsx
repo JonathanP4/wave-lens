@@ -8,7 +8,7 @@ export default function Navbar() {
 	return (
 		<nav className="border border-b-border sticky top-0 left-0 right-0 backdrop-blur-xs z-50">
 			<div className="flex justify-between items-center p-4">
-				<Link href={BASE_URL}>
+				<Link href={BASE_URL + "/dashboard"}>
 					<div className="flex items-center">
 						<AudioWaveform />
 						<h1 className="text-xl font-black">

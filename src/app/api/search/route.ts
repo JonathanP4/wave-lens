@@ -12,7 +12,10 @@ export async function POST(req: NextRequest) {
 		headers: { Authorization: `Bearer ${accessToken}` },
 	};
 
-	const res = await fetch(BASE_URL + `/search?q=${q}&type=${type}`, init);
+	const res = await fetch(
+		BASE_URL + `/search?q=${q}&type=${type}&limit=10`,
+		init,
+	);
 	const data = await res.json();
 
 	return Response.json(data);
