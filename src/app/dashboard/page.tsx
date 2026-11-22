@@ -219,50 +219,62 @@ export default function DashboardPage() {
 					<section id="about_you">
 						<h2 className="text-lg font-semibold my-4">About You</h2>
 
-						<Card className="flex flex-wrap gap-4 md:gap-6 mb-6 w-fit">
-							<CardContent className="flex flex-wrap gap-4 md:gap-6 justify-center">
+						<Card className="flex flex-wrap gap-6 mb-6 w-fit">
+							<CardContent className="flex flex-wrap gap-6 justify-center">
 								<Card className="w-37">
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={following} />
 									</CardTitle>
-									<CardContent>Followed Artists</CardContent>
+									<CardContent className="text-sm md:text-base">
+										Followed Artists
+									</CardContent>
 								</Card>
 
-								<Card className="w-37">
+								<Card className="w-30 md:w-37">
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={savedTracks} />
 									</CardTitle>
-									<CardContent>Saved Tracks</CardContent>
+									<CardContent className="text-sm md:text-base">
+										Saved Tracks
+									</CardContent>
 								</Card>
 
-								<Card className="w-37">
+								<Card className="w-30 md:w-37">
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={savedAlbuns} />
 									</CardTitle>
-									<CardContent>Saved Albums</CardContent>
+									<CardContent className="text-sm md:text-base">
+										Saved Albums
+									</CardContent>
 								</Card>
 
-								<Card className="w-37">
+								<Card className="w-30 md:w-37">
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={savedAudiobooks} />
 									</CardTitle>
-									<CardContent>Saved Audiobooks</CardContent>
+									<CardContent className="text-sm md:text-base">
+										Saved Audiobooks
+									</CardContent>
 								</Card>
 
-								<Card className="w-37">
+								<Card className="w-30 md:w-37">
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={savedEpisodes} />
 									</CardTitle>
-									<CardContent>Saved Episodes</CardContent>
+									<CardContent className="text-sm md:text-base">
+										Saved Episodes
+									</CardContent>
 								</Card>
 
-								<Card className="w-37">
+								<Card className="w-30 md:w-37">
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={totalListenedRecently} />h
 									</CardTitle>
 									<CardContent>
 										<HoverCard>
-											<HoverCardTrigger>*Listened recently</HoverCardTrigger>
+											<HoverCardTrigger className="text-sm md:text-base">
+												*Listened recently
+											</HoverCardTrigger>
 											<HoverCardContent>
 												Sums up the duration of the last 50 tracks you played
 											</HoverCardContent>
