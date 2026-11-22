@@ -275,7 +275,10 @@ export default function DashboardPage() {
 
 					<section id="top_artists">
 						<h2 className="text-lg font-semibold my-4">Top Artists</h2>
-						<Carousel className="w-full max-w-xs sm:max-w-xl md:max-w-xl lg:max-w-4xl xl:max-w-[1900px]">
+						<Carousel
+							opts={{ slidesToScroll: 2, align: "start" }}
+							className="w-full max-w-xs sm:max-w-xl md:max-w-xl lg:max-w-4xl xl:max-w-[1900px]"
+						>
 							<CarouselContent className="-ml-6">
 								{topArtists
 									? topArtists.items.map((i: any) => (
@@ -318,7 +321,10 @@ export default function DashboardPage() {
 
 					<section id="top_tracks">
 						<h2 className="text-lg font-semibold my-4">Top Tracks</h2>
-						<Carousel className="w-full max-w-xs sm:max-w-xl md:max-w-xl lg:max-w-4xl xl:max-w-[1900px]">
+						<Carousel
+							opts={{ slidesToScroll: 2, align: "start" }}
+							className="w-full max-w-xs sm:max-w-xl md:max-w-xl lg:max-w-4xl xl:max-w-[1900px]"
+						>
 							<CarouselContent className="-ml-6">
 								{topTracks
 									? topTracks.items.map((i: any) => (
