@@ -59,8 +59,6 @@ export async function GET(req: NextRequest) {
 		path: "/",
 	};
 
-	console.log(req.nextUrl);
-
 	const res = NextResponse.redirect(new URL("/dashboard", req.nextUrl.origin));
 
 	res.cookies.set("sp_access", t.access_token, {

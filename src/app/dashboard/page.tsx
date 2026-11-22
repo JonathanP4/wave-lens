@@ -173,8 +173,6 @@ export default function DashboardPage() {
 	const getProgress = () => {
 		if (!currentlyPlaying) return;
 
-		console.log("called");
-
 		setProgress(
 			(currentlyPlaying.progress_ms / currentlyPlaying.item.duration_ms) * 100,
 		);
