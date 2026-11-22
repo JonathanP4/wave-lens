@@ -21,8 +21,6 @@ import { use, useEffect, useState } from "react";
 
 type Params = { params: Promise<{ id: string }> };
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
 export default function ArtistPage({ params }: Params) {
 	const { id } = use(params);
 
@@ -43,7 +41,7 @@ export default function ArtistPage({ params }: Params) {
 	};
 
 	const getAlbum = async () => {
-		const res = await fetch(BASE_URL + `/api/album/${id}`);
+		const res = await fetch(`/api/album/${id}`);
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);

@@ -5,8 +5,6 @@ import Link from "next/link";
 
 export const instant = false;
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!;
-
 type SearchParams = {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
@@ -18,7 +16,7 @@ export default async function AuthPage({ searchParams }: SearchParams) {
 		<main>
 			<div className="absolute left-0 right-0">
 				<div className="p-4 flex items-center justify-between">
-					<Link href={BASE_URL}>
+					<Link href="/">
 						<h1 className="text-xl font-black">
 							Wave<span className="text-primary">Lens</span>
 						</h1>
@@ -32,7 +30,7 @@ export default async function AuthPage({ searchParams }: SearchParams) {
 					<p className="text-sm mt-2">
 						Press the button bellow to connect your Spotify account
 					</p>
-					<Link href={"/api/auth/login"}>
+					<Link href="/api/auth/login">
 						<Button className={"w-full mt-6 font-semibold"}>
 							Connect to Spotify
 						</Button>

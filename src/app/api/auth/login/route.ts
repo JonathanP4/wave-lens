@@ -1,17 +1,20 @@
 import crypto from "crypto";
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID!;
-const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI!;
 
-export async function GET() {
+export async function GET(req: NextRequest) {
 	const verifier = crypto.randomBytes(64).toString("base64url");
 	const challenge = crypto
 		.createHash("sha256")
 		.update(verifier)
 		.digest("base64url");
 	const state = crypto.randomBytes(16).toString("base64url");
+	const redirectUri = new URL(
+		"/api/auth/callback",
+		req.nextUrl.origin,
+	).toString();
 
 	const scope =
 		"user-read-playback-state user-read-currently-playing playlist-read-private playlist-read-collaborative user-follow-read user-read-playback-position user-top-read user-read-recently-played user-library-read user-read-email user-read-private";
@@ -23,7 +26,7 @@ export async function GET() {
 		scope,
 		code_challenge_method: "S256",
 		code_challenge: challenge,
-		redirect_uri: REDIRECT_URI,
+		redirect_uri: redirectUri,
 		state,
 	};
 

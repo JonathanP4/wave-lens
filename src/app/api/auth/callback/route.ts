@@ -1,9 +1,7 @@
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { NextRequest, NextResponse } from "next/server";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!;
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID!;
-const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI!;
 
 export async function GET(req: NextRequest) {
 	const { searchParams } = req.nextUrl;
@@ -15,7 +13,7 @@ export async function GET(req: NextRequest) {
 
 	const fail = () => {
 		const res = NextResponse.redirect(
-			new URL(BASE_URL + "/auth?error=1", req.nextUrl),
+			new URL("/auth?error=1", req.nextUrl.origin),
 		);
 		res.cookies.delete("pkce_verifier");
 		res.cookies.delete("oauth_state");
@@ -33,6 +31,11 @@ export async function GET(req: NextRequest) {
 		return fail();
 	}
 
+	const redirectUri = new URL(
+		"/api/auth/callback",
+		req.nextUrl.origin,
+	).toString();
+
 	const r = await fetch("https://accounts.spotify.com/api/token", {
 		method: "POST",
 		headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -40,7 +43,7 @@ export async function GET(req: NextRequest) {
 			client_id: CLIENT_ID,
 			grant_type: "authorization_code",
 			code,
-			redirect_uri: REDIRECT_URI,
+			redirect_uri: redirectUri,
 			code_verifier: verifier,
 		}),
 	});
@@ -58,7 +61,7 @@ export async function GET(req: NextRequest) {
 	console.log(req.nextUrl);
 
 	const res = NextResponse.redirect(
-		new URL(BASE_URL + "/dashboard", req.nextUrl),
+		new URL("/dashboard", req.nextUrl.origin),
 	);
 
 	res.cookies.set("sp_access", t.access_token, {

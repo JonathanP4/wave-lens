@@ -22,8 +22,6 @@ import { use, useEffect, useState } from "react";
 type Params = { params: Promise<{ id: string }> };
 type IncludeGroups = "album" | "single" | "appears_on";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
 export default function ArtistPage({ params }: Params) {
 	const { id } = use(params);
 
@@ -40,7 +38,7 @@ export default function ArtistPage({ params }: Params) {
 	};
 
 	const getArtist = async () => {
-		const res = await fetch(BASE_URL + `/api/artist/${id}`);
+		const res = await fetch(`/api/artist/${id}`);
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -53,7 +51,7 @@ export default function ArtistPage({ params }: Params) {
 		limit = 10,
 		offset = 0,
 	) => {
-		const res = await fetch(BASE_URL + `/api/artist/${id}/albums`, {
+		const res = await fetch(`/api/artist/${id}/albums`, {
 			method: "POST",
 			body: JSON.stringify({
 				include_groups,

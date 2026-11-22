@@ -12,8 +12,6 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { SubmitEvent, useEffect, useState } from "react";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
 export default function SearchPage() {
 	const searchParams = useSearchParams();
 
@@ -34,7 +32,7 @@ export default function SearchPage() {
 	};
 
 	const getSearchResults = async () => {
-		const res = await fetch(BASE_URL + "/api/search/", {
+		const res = await fetch("/api/search/", {
 			method: "POST",
 			body: JSON.stringify({
 				q: encodeURIComponent(q),

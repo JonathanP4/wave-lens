@@ -21,8 +21,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitEvent, useEffect, useMemo, useState } from "react";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
 export default function DashboardPage() {
 	const router = useRouter();
 
@@ -47,7 +45,7 @@ export default function DashboardPage() {
 	};
 
 	const getProfile = async () => {
-		const res = await fetch(BASE_URL + "/api/user/profile");
+		const res = await fetch("/api/user/profile");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -56,7 +54,7 @@ export default function DashboardPage() {
 	};
 
 	const getTopItems = async (type: "artists" | "tracks") => {
-		const res = await fetch(BASE_URL + "/api/user/top", {
+		const res = await fetch("/api/user/top", {
 			method: "POST",
 			body: JSON.stringify({
 				type,
@@ -75,7 +73,7 @@ export default function DashboardPage() {
 	};
 
 	const getFollowedArtists = async () => {
-		const res = await fetch(BASE_URL + "/api/user/following");
+		const res = await fetch("/api/user/following");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -84,7 +82,7 @@ export default function DashboardPage() {
 	};
 
 	const getSavedTracks = async () => {
-		const res = await fetch(BASE_URL + "/api/user/tracks");
+		const res = await fetch("/api/user/tracks");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -93,7 +91,7 @@ export default function DashboardPage() {
 	};
 
 	const getSavedAlbuns = async () => {
-		const res = await fetch(BASE_URL + "/api/user/albums");
+		const res = await fetch("/api/user/albums");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -102,7 +100,7 @@ export default function DashboardPage() {
 	};
 
 	const getSavedAudiobooks = async () => {
-		const res = await fetch(BASE_URL + "/api/user/audiobooks");
+		const res = await fetch("/api/user/audiobooks");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -111,7 +109,7 @@ export default function DashboardPage() {
 	};
 
 	const getSavedEpisodes = async () => {
-		const res = await fetch(BASE_URL + "/api/user/episodes");
+		const res = await fetch("/api/user/episodes");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -120,7 +118,7 @@ export default function DashboardPage() {
 	};
 
 	const getRecentlyPlayed = async () => {
-		const res = await fetch(BASE_URL + "/api/user/played-tracks", {
+		const res = await fetch("/api/user/played-tracks", {
 			method: "POST",
 			body: JSON.stringify({ limit: 50 }),
 		});
