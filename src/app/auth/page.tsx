@@ -32,7 +32,7 @@ export default async function AuthPage({ searchParams }: SearchParams) {
 					<p className="text-sm mt-2">
 						Press the button bellow to connect your Spotify account
 					</p>
-					<Link href={BASE_URL + "/api/auth/login"}>
+					<Link href={"/api/auth/login"}>
 						<Button className={"w-full mt-6 font-semibold"}>
 							Connect to Spotify
 						</Button>
