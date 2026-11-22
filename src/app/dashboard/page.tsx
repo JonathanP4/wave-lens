@@ -221,11 +221,11 @@ export default function DashboardPage() {
 
 						<Card className="flex flex-wrap gap-6 mb-6 w-fit">
 							<CardContent className="flex flex-wrap gap-6 justify-center">
-								<Card className="w-37">
+								<Card className="w-30 md:w-37">
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={following} />
 									</CardTitle>
-									<CardContent className="text-sm md:text-base">
+									<CardContent className="text-xs md:text-base">
 										Followed Artists
 									</CardContent>
 								</Card>
@@ -234,7 +234,7 @@ export default function DashboardPage() {
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={savedTracks} />
 									</CardTitle>
-									<CardContent className="text-sm md:text-base">
+									<CardContent className="text-xs md:text-base">
 										Saved Tracks
 									</CardContent>
 								</Card>
@@ -243,7 +243,7 @@ export default function DashboardPage() {
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={savedAlbuns} />
 									</CardTitle>
-									<CardContent className="text-sm md:text-base">
+									<CardContent className="text-xs md:text-base">
 										Saved Albums
 									</CardContent>
 								</Card>
@@ -252,7 +252,7 @@ export default function DashboardPage() {
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={savedAudiobooks} />
 									</CardTitle>
-									<CardContent className="text-sm md:text-base">
+									<CardContent className="text-xs md:text-base">
 										Saved Audiobooks
 									</CardContent>
 								</Card>
@@ -261,7 +261,7 @@ export default function DashboardPage() {
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={savedEpisodes} />
 									</CardTitle>
-									<CardContent className="text-sm md:text-base">
+									<CardContent className="text-xs md:text-base">
 										Saved Episodes
 									</CardContent>
 								</Card>
@@ -272,7 +272,7 @@ export default function DashboardPage() {
 									</CardTitle>
 									<CardContent>
 										<HoverCard>
-											<HoverCardTrigger className="text-sm md:text-base">
+											<HoverCardTrigger className="text-xs md:text-base">
 												*Listened recently
 											</HoverCardTrigger>
 											<HoverCardContent>
