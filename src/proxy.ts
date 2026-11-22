@@ -8,6 +8,10 @@ const base = {
 };
 
 export async function proxy(req: NextRequest) {
+	if (req.nextUrl.pathname.startsWith("/api/auth/")) {
+		return NextResponse.next();
+	}
+
 	const access = req.cookies.get("sp_access")?.value;
 	const refresh = req.cookies.get("sp_refresh")?.value;
 
