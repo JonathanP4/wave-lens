@@ -219,8 +219,8 @@ export default function DashboardPage() {
 					<section id="about_you">
 						<h2 className="text-lg font-semibold my-4">About You</h2>
 
-						<Card className="flex flex-wrap gap-6 mb-6 w-fit">
-							<CardContent className="flex flex-wrap gap-6 justify-center">
+						<Card className="flex flex-wrap gap-4 md:gap-6 mb-6 w-fit">
+							<CardContent className="flex flex-wrap gap-4 md:gap-6 justify-center">
 								<Card className="w-37">
 									<CardTitle className="text-3xl font-bold px-4">
 										<NumberFlow value={following} />
