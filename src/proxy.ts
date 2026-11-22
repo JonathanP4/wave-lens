@@ -18,7 +18,9 @@ export async function proxy(req: NextRequest) {
 	if (access) return NextResponse.next();
 
 	const toAuth = () => {
-		const res = NextResponse.redirect(new URL("/auth", req.url));
+		const res = NextResponse.redirect(
+			new URL("https://10.0.0.124:3000/api/auth/callback/auth", req.url),
+		);
 		res.cookies.delete("sp_access");
 		res.cookies.delete("sp_refresh");
 		return res;

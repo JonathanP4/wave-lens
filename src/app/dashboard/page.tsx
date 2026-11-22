@@ -19,7 +19,17 @@ import NumberFlow from "@number-flow/react";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { SubmitEvent, useEffect, useMemo, useState } from "react";
+import {
+	Ref,
+	RefObject,
+	SubmitEvent,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "";
 
 export default function DashboardPage() {
 	const router = useRouter();
@@ -37,6 +47,13 @@ export default function DashboardPage() {
 	const [savedEpisodes, setSavedEpisodes] = useState(0);
 	const [recentTracks, setRecentTracks] = useState<any>();
 
+	const [progress, setProgress] = useState(0);
+
+	const [currentlyPlaying, setCurrentlyPlaying] = useState<any>();
+
+	const sentinelRef = useRef<HTMLDivElement>(null);
+	const [stuck, setStuck] = useState(false);
+
 	const setToastError = (title: string, description: string) => {
 		toast.add({
 			title: `Error ${title}`,
@@ -45,7 +62,7 @@ export default function DashboardPage() {
 	};
 
 	const getProfile = async () => {
-		const res = await fetch("/api/user/profile");
+		const res = await fetch(BASE_URL + "/api/user/profile");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -54,7 +71,7 @@ export default function DashboardPage() {
 	};
 
 	const getTopItems = async (type: "artists" | "tracks") => {
-		const res = await fetch("/api/user/top", {
+		const res = await fetch(BASE_URL + "/api/user/top", {
 			method: "POST",
 			body: JSON.stringify({
 				type,
@@ -73,7 +90,7 @@ export default function DashboardPage() {
 	};
 
 	const getFollowedArtists = async () => {
-		const res = await fetch("/api/user/following");
+		const res = await fetch(BASE_URL + "/api/user/following");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -82,7 +99,7 @@ export default function DashboardPage() {
 	};
 
 	const getSavedTracks = async () => {
-		const res = await fetch("/api/user/tracks");
+		const res = await fetch(BASE_URL + "/api/user/tracks");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -91,7 +108,7 @@ export default function DashboardPage() {
 	};
 
 	const getSavedAlbuns = async () => {
-		const res = await fetch("/api/user/albums");
+		const res = await fetch(BASE_URL + "/api/user/albums");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -100,7 +117,7 @@ export default function DashboardPage() {
 	};
 
 	const getSavedAudiobooks = async () => {
-		const res = await fetch("/api/user/audiobooks");
+		const res = await fetch(BASE_URL + "/api/user/audiobooks");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -109,7 +126,7 @@ export default function DashboardPage() {
 	};
 
 	const getSavedEpisodes = async () => {
-		const res = await fetch("/api/user/episodes");
+		const res = await fetch(BASE_URL + "/api/user/episodes");
 		const data = await res.json();
 
 		if (data.error) return setToastError(data.error.status, data.error.message);
@@ -118,7 +135,7 @@ export default function DashboardPage() {
 	};
 
 	const getRecentlyPlayed = async () => {
-		const res = await fetch("/api/user/played-tracks", {
+		const res = await fetch(BASE_URL + "/api/user/played-tracks", {
 			method: "POST",
 			body: JSON.stringify({ limit: 50 }),
 		});
@@ -127,6 +144,21 @@ export default function DashboardPage() {
 		if (data.error) return setToastError(data.error.status, data.error.message);
 
 		setRecentTracks(data);
+	};
+
+	const getCurentlyListening = async () => {
+		try {
+			const res = await fetch(BASE_URL + "/api/user/currently-playing");
+
+			const data = await res.json();
+
+			if (data.error)
+				return setToastError(data.error.status, data.error.message);
+
+			setCurrentlyPlaying(data);
+		} catch (err: any) {
+			console.log(err);
+		}
 	};
 
 	const submitHandler = async (e: SubmitEvent) => {
@@ -146,11 +178,46 @@ export default function DashboardPage() {
 		return +(totalMs / 3_600_000).toFixed(2);
 	}, [recentTracks]);
 
+	const getProgress = () => {
+		if (!currentlyPlaying) return;
+
+		console.log("called");
+
+		setProgress(
+			(currentlyPlaying.progress_ms / currentlyPlaying.item.duration_ms) * 100,
+		);
+	};
+
+	useEffect(() => {
+		const el = sentinelRef.current;
+		if (!el) return;
+
+		const observer = new IntersectionObserver(
+			([entry]) => setStuck(!entry.isIntersecting),
+			{ threshold: 0 },
+		);
+
+		observer.observe(el);
+		return () => observer.disconnect();
+	}, []);
+
 	useEffect(() => {
 		getProfile();
+		getCurentlyListening();
 		getTopItems("artists");
 		getTopItems("tracks");
 	}, []);
+
+	useEffect(() => {
+		// const observer = () => setInterval(() => getCurentlyListening(), 3000);
+		// return () => {
+		// 	observer();
+		// };
+	}, []);
+
+	useEffect(() => {
+		getProgress();
+	}, [currentlyPlaying]);
 
 	useEffect(() => {
 		getFollowedArtists();
@@ -298,7 +365,7 @@ export default function DashboardPage() {
 												key={i.id}
 												className="pl-6 basis-1/2 sm:basis-1/4 lg:basis-1/6 xl:basis-1/8 2xl:basis-1/10"
 											>
-												<Link href={`/dashboard/artist/${i.id}`}>
+												<Link href={BASE_URL + `/dashboard/artist/${i.id}`}>
 													<div>
 														<img
 															src={i.images[0].url}
@@ -344,7 +411,7 @@ export default function DashboardPage() {
 												key={i.id}
 												className="pl-6 basis-1/2 sm:basis-1/4 lg:basis-1/6 xl:basis-1/8 2xl:basis-1/10"
 											>
-												<Link href={`/dashboard/track/${i.id}`}>
+												<Link href={BASE_URL + `/dashboard/track/${i.id}`}>
 													<div className="h-full">
 														<img
 															src={i.album.images[0].url}
@@ -374,6 +441,58 @@ export default function DashboardPage() {
 							</CarouselContent>
 						</Carousel>
 					</section>
+
+					<section data-stuck={stuck} id="playback" className="sticky bottom-4">
+						{currentlyPlaying && (
+							<Card className={`bg-black ${stuck ? "max-w-fit" : "w-full"}`}>
+								<CardContent className="flex justify-between items-center gap-6">
+									<Link
+										href={
+											BASE_URL + `/dashboard/track/${currentlyPlaying.item.id}`
+										}
+									>
+										<div className="flex gap-4 items-center">
+											<img
+												width={60}
+												height={60}
+												className="w-15 h-15 rounded-md"
+												src={currentlyPlaying.item.album.images[0].url}
+												alt=""
+											/>
+											<div>
+												<p className="font-semibold">
+													{currentlyPlaying.item.name}
+												</p>
+												<p className="text-xs text-muted-foreground">
+													{currentlyPlaying.item.artists[0].name}
+												</p>
+											</div>
+										</div>
+									</Link>
+									{!stuck && (
+										<div className="flex flex-1 h-1 rounded-full items-center justify-center">
+											<div className="w-full max-w-md bg-secondary rounded-full">
+												<div
+													style={{
+														width: progress.toFixed(3) + "%",
+														height: 4,
+													}}
+													className="rounded-full bg-primary"
+												></div>
+											</div>
+										</div>
+									)}
+									{!stuck && (
+										<p className="text-muted-foreground text-xs">
+											Currently playing
+										</p>
+									)}
+								</CardContent>
+							</Card>
+						)}
+					</section>
+
+					<div ref={sentinelRef} aria-hidden className="h-px" />
 				</div>
 			</main>
 		</>

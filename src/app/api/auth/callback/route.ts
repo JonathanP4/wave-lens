@@ -60,9 +60,7 @@ export async function GET(req: NextRequest) {
 
 	console.log(req.nextUrl);
 
-	const res = NextResponse.redirect(
-		new URL("/dashboard", req.nextUrl.origin),
-	);
+	const res = NextResponse.redirect(new URL("/dashboard", req.nextUrl.origin));
 
 	res.cookies.set("sp_access", t.access_token, {
 		...base,

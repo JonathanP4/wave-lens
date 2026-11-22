@@ -21,6 +21,8 @@ import { use, useEffect, useState } from "react";
 
 type Params = { params: Promise<{ id: string }> };
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "";
+
 export default function ArtistPage({ params }: Params) {
 	const { id } = use(params);
 
@@ -127,7 +129,7 @@ export default function ArtistPage({ params }: Params) {
 													>
 														<Card>
 															<Link
-																href={`/dashboard/artist/${a.id}`}
+																href={BASE_URL + `/dashboard/artist/${a.id}`}
 																className="h-full block"
 															>
 																<CardContent className="flex gap-4">
@@ -164,7 +166,7 @@ export default function ArtistPage({ params }: Params) {
 							<div>
 								<h2 className="text-2xl mb-4">Album</h2>
 								<Card className="w-fit">
-									<Link href={`/dashboard/album/${track.album.id}`}>
+									<Link href={BASE_URL + `/dashboard/album/${track.album.id}`}>
 										<CardContent>
 											<img
 												className="rounded-sm"

@@ -5,6 +5,8 @@ import Link from "next/link";
 
 export const instant = false;
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "";
+
 export default async function Home() {
 	const cookieStore = await cookies();
 
@@ -21,7 +23,7 @@ export default async function Home() {
 						Wave<span className="text-primary">Lens</span>
 					</h1>
 					<p className="text-sm">Dashboard for Spotify</p>
-					<Link href={`${access ? "/dashboard" : "/auth"}`}>
+					<Link href={`${BASE_URL}${access ? "/dashboard" : "/auth"}`}>
 						<Button className={"w-full mt-6 font-semibold"}>
 							{access ? "Go to dashboard" : "Try it out!"}
 						</Button>

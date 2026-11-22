@@ -12,6 +12,8 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { SubmitEvent, useEffect, useState } from "react";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "";
+
 export default function SearchPage() {
 	const searchParams = useSearchParams();
 
@@ -32,7 +34,7 @@ export default function SearchPage() {
 	};
 
 	const getSearchResults = async () => {
-		const res = await fetch("/api/search/", {
+		const res = await fetch(BASE_URL + "/api/search/", {
 			method: "POST",
 			body: JSON.stringify({
 				q: encodeURIComponent(q),
@@ -88,7 +90,7 @@ export default function SearchPage() {
 					<div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
 						{results.artists.items.map((a: any) => (
 							<Card className="h-full">
-								<Link href={`/dashboard/artist/${a.id}`}>
+								<Link href={BASE_URL + `/dashboard/artist/${a.id}`}>
 									<CardContent className="flex gap-6 items-center">
 										{a?.images.length > 0 ? (
 											<img
@@ -123,7 +125,7 @@ export default function SearchPage() {
 					<div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 						{results.albums.items.map((a: any) => (
 							<Card className="h-full relative">
-								<Link href={`/dashboard/album/${a.id}`}>
+								<Link href={BASE_URL + `/dashboard/album/${a.id}`}>
 									<CardContent>
 										<div className="flex gap-4">
 											<img
