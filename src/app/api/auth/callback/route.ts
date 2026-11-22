@@ -2,6 +2,7 @@ import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { NextRequest, NextResponse } from "next/server";
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID!;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "";
 
 export async function GET(req: NextRequest) {
 	const { searchParams } = req.nextUrl;
@@ -13,7 +14,7 @@ export async function GET(req: NextRequest) {
 
 	const fail = () => {
 		const res = NextResponse.redirect(
-			new URL("/auth?error=1", req.nextUrl.origin),
+			new URL(BASE_URL + "/auth?error=1", req.nextUrl.origin),
 		);
 		res.cookies.delete("pkce_verifier");
 		res.cookies.delete("oauth_state");
@@ -32,7 +33,7 @@ export async function GET(req: NextRequest) {
 	}
 
 	const redirectUri = new URL(
-		"/api/auth/callback",
+		BASE_URL + "/api/auth/callback",
 		req.nextUrl.origin,
 	).toString();
 

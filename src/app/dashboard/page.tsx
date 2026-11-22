@@ -19,15 +19,7 @@ import NumberFlow from "@number-flow/react";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-	Ref,
-	RefObject,
-	SubmitEvent,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
+import { SubmitEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "";
 
@@ -209,10 +201,10 @@ export default function DashboardPage() {
 	}, []);
 
 	useEffect(() => {
-		// const observer = () => setInterval(() => getCurentlyListening(), 3000);
-		// return () => {
-		// 	observer();
-		// };
+		const observer = () => setInterval(() => getCurentlyListening(), 2000);
+		return () => {
+			observer();
+		};
 	}, []);
 
 	useEffect(() => {
@@ -444,8 +436,12 @@ export default function DashboardPage() {
 
 					<section data-stuck={stuck} id="playback" className="sticky bottom-4">
 						{currentlyPlaying && (
-							<Card className={`bg-black ${stuck ? "max-w-fit" : "w-full"}`}>
-								<CardContent className="flex justify-between items-center gap-6">
+							<Card
+								className={`${stuck ? "w-50 bg-black/20 backdrop-blur-sm py-2" : "w-full bg-black"} transition-all duration-200`}
+							>
+								<CardContent
+									className={`flex justify-between items-center gap-6 ${stuck ? "px-2" : ""}`}
+								>
 									<Link
 										href={
 											BASE_URL + `/dashboard/track/${currentlyPlaying.item.id}`
@@ -483,7 +479,7 @@ export default function DashboardPage() {
 										</div>
 									)}
 									{!stuck && (
-										<p className="text-muted-foreground text-xs">
+										<p className="hidden md:block text-muted-foreground text-xs">
 											Currently playing
 										</p>
 									)}
